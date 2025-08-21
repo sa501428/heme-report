@@ -48,7 +48,8 @@ const LONEMAN_QUICK_TEXTS = {
     'cllac': 'Lymphocytes: Large paratrabecular aggregates of small cells with round to slightly irregular nuclei, clumped chromatin, inconspicuous nucleoli, and scant cytoplasm. An immunostain reveals the cells to be B cells (PAX5+) with aberrant expression of CD5 and which constitute >90% of the cellularity.',
     'cllasp': 'Lymphocytes: Small- to medium-sized cells with round to slightly irregular nuclei, clumped to moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm.',
     'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.',
-    'fdc':'follicular dendritic cell'
+    'fdc':'follicular dendritic cell',
+    'nmde':'no morphologic diagnostic evidence of the patient\'s neoplasm are seen'
 };
 
 // Lymphoid Templates
@@ -581,6 +582,8 @@ function generateCBCParagraph(parsed) {
     
     // Add differential info
     const diff = parsed.differential;
+    const morphology = parsed.morphology;
+    
     if (diff && Object.keys(diff).length > 1) {
         if (diff.diffMethod && diff.diffMethod.includes('not performed')) {
             paragraph += ` Differential was not performed due to low WBC count.`;
@@ -599,21 +602,20 @@ function generateCBCParagraph(parsed) {
                 }
             });
             
+            // Add NRBC to differential if present
+            if (morphology && morphology.nrbc) {
+                diffParts.push(`${morphology.nrbc}% nucleated red blood cells`);
+            }
+            
             paragraph += diffParts.join(', ') + '.';
         }
     }
     
-    // Add morphology and special findings
-    const morphology = parsed.morphology;
+    // Add other morphology findings (excluding NRBC which was handled above)
     if (morphology && Object.keys(morphology).length > 0) {
         const morphParts = [];
         
-        // Handle NRBC specifically
-        if (morphology.nrbc) {
-            morphParts.push(`${morphology.nrbc}% nucleated red blood cells`);
-        }
-        
-        // Handle other morphology findings
+        // Handle other morphology findings (skip NRBC as it's included with differential)
         Object.keys(morphology).forEach(key => {
             if (key !== 'nrbc' && morphology[key]) {
                 const displayName = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
