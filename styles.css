@@ -732,34 +732,4 @@ select:focus {
     background-color: #fff8f8 !important;
 }
 
-/* Notification styles */
-.notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    border-radius: 8px;
-    color: white;
-    font-weight: 600;
-    z-index: 1001;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    max-width: 300px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.notification.show {
-    transform: translateX(0);
-}
-
-.notification.success {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-}
-
-.notification.error {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-}
-
-.notification.info {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-}
+/* Notifications removed for minimal interface */

@@ -718,14 +718,12 @@ function clearEditor() {
         document.getElementById('main-editor').value = '';
         window.app.updateCharacterCount();
         window.app.autoSave();
-        window.app.showNotification('Editor cleared', 'info');
     }
 }
 
 function downloadReport() {
     const editor = document.getElementById('main-editor');
     if (editor.value.trim() === '') {
-        window.app.showNotification('Nothing to download - editor is empty', 'error');
         return;
     }
     
@@ -738,14 +736,11 @@ function downloadReport() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
-    window.app.showNotification('Report downloaded successfully!', 'success');
 }
 
 function printReport() {
     const editor = document.getElementById('main-editor');
     if (editor.value.trim() === '') {
-        window.app.showNotification('Nothing to print - editor is empty', 'error');
         return;
     }
     
