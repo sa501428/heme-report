@@ -124,7 +124,17 @@ Lymphocytes and plasma cells demonstrate [small mature lymphocytes/atypical lymp
 Architecture & Other Findings:
 [Lymphoid aggregates: paratrabecular/interstitial/nodular/diffuse.]
 [Hemosiderin-laden macrophages: rare/few/numerous.]
-[Other core findings: granulomas/hemophagocytosis/mast cell aggregates/necrosis/osteosclerosis.]`
+[Other core findings: granulomas/hemophagocytosis/mast cell aggregates/necrosis/osteosclerosis.]`,
+
+    other: `OTHER: XX% of cellularity. 
+  Immunohistochemistry: IHC.
+  Architecture: ARCHITECTURE.
+  Cytology: CYTOLOGY.
+
+Of the remaining cellularity:`,
+
+    clot: `CLOT SECTION:
+The clot section contains particles of marrow with features similar to the core biopsy.`
 };
 
 // Aspirate Templates
@@ -630,6 +640,28 @@ function insertParsedParagraph() {
     }
 }
 
+// Peripheral Blood Templates
+const PERIPHERAL_BLOOD = {
+    normal: 'Review of the peripheral smear reveals mature normal leukocytes.',
+    left_shift: 'Review of the peripheral smear reveals a left shift with increased bands and immature granulocytes.',
+    blasts: 'Review of the peripheral smear reveals circulating blasts comprising X% of leukocytes.',
+    atypical_lymphs: 'Review of the peripheral smear reveals atypical/reactive lymphocytes.',
+    leukoerythroblastic: 'Review of the peripheral smear reveals a leukoerythroblastic picture with nucleated red cells, tear drop cells, and left-shifted granulocytes.',
+    dysplastic: 'Review of the peripheral smear reveals dysplastic changes including hypogranular and hyposegmented neutrophils.',
+    tear_drops: 'Review of the peripheral smear reveals tear drop cells (dacrocytes) and anisopoikilocytosis.'
+};
+
+// IHC & Special Stains Templates
+const IHC_STAINS = {
+    reticulin: 'Reticulin special stain shows X+ (out of 3) fiber staining.',
+    trichrome: 'Trichrome special stain shows .',
+    iron: 'Iron special stain shows .',
+    congo: 'Congo Red special stain shows .',
+    giemsa: 'A Giemsa special stain was performed to evaluate mast cells and plasma cells.',
+    p53: 'P53 stain shows scattered staining.',
+    blasts: 'CD34+ CD117+ blasts are X% of cellularity by CD34 immunostain and CD117/GATA-1 double stains.'
+};
+
 // Template Functions
 function insertCoreBasicTemplate() {
     insertTemplate(CORE_TEMPLATES.basic);
@@ -639,12 +671,32 @@ function insertCoreDetailedTemplate() {
     insertTemplate(CORE_TEMPLATES.detailed);
 }
 
+function insertCoreOtherTemplate() {
+    insertTemplate(CORE_TEMPLATES.other);
+}
+
+function insertCoreClotTemplate() {
+    insertTemplate(CORE_TEMPLATES.clot);
+}
+
 function insertAspirateBasicTemplate() {
     insertTemplate(ASPIRATE_TEMPLATES.basic);
 }
 
 function insertAspirateDetailedTemplate() {
     insertTemplate(ASPIRATE_TEMPLATES.detailed);
+}
+
+function insertPeripheralBlood(findingType) {
+    if (PERIPHERAL_BLOOD[findingType]) {
+        insertTemplate(PERIPHERAL_BLOOD[findingType]);
+    }
+}
+
+function insertIHCStain(stainType) {
+    if (IHC_STAINS[stainType]) {
+        insertTemplate(IHC_STAINS[stainType]);
+    }
 }
 
 function insertLymphoidTemplate(type) {

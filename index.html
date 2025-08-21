@@ -69,6 +69,8 @@
                             <div class="template-controls">
                                 <button class="btn btn-template" onclick="insertCoreBasicTemplate()">Insert Basic Template</button>
                                 <button class="btn btn-template" onclick="insertCoreDetailedTemplate()">Insert Detailed Template</button>
+                                <button class="btn btn-template" onclick="insertCoreOtherTemplate()">Insert Other Template</button>
+                                <button class="btn btn-template" onclick="insertCoreClotTemplate()">Insert Clot Template</button>
                             </div>
                             <div class="template-preview">
                                 <p><strong>Core Biopsy Template:</strong> Includes adequacy, cellularity, M:E ratio, and detailed cell line descriptions</p>
@@ -106,6 +108,50 @@
                                 <button class="btn btn-template" onclick="insertLymphoidTemplate('dlbcl')">DLBCL</button>
                                 <button class="btn btn-template" onclick="insertLymphoidTemplate('hodgkin')">Hodgkin Lymphoma</button>
                                 <button class="btn btn-template" onclick="showLymphoidForm()">Interactive Form</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peripheral Blood Section -->
+                    <div class="template-section" id="peripheral-section">
+                        <div class="section-header" onclick="toggleSection('peripheral-content')">
+                            <h3>🩸 Peripheral Blood</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="peripheral-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('normal')">Normal Smear</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('left_shift')">Left Shift</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('blasts')">Circulating Blasts</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('atypical_lymphs')">Atypical Lymphocytes</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('leukoerythroblastic')">Leukoerythroblastic</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('dysplastic')">Dysplastic Changes</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('tear_drops')">Tear Drop Cells</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Peripheral Blood:</strong> Common peripheral smear findings for myeloid and lymphoid conditions</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IHC & Special Stains Section -->
+                    <div class="template-section" id="ihc-section">
+                        <div class="section-header" onclick="toggleSection('ihc-content')">
+                            <h3>🔬 IHC & Special Stains</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="ihc-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertIHCStain('reticulin')">Reticulin Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('trichrome')">Trichrome Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('iron')">Iron Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('congo')">Congo Red Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('giemsa')">Giemsa Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('p53')">P53 Stain</button>
+                                <button class="btn btn-template" onclick="insertIHCStain('blasts')">CD34/CD117 Blasts</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>IHC & Special Stains:</strong> Quick insertion of common immunohistochemistry and special stain findings</p>
                             </div>
                         </div>
                     </div>
