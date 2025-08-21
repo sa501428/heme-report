@@ -688,14 +688,22 @@ function insertAspirateDetailedTemplate() {
 }
 
 function insertPeripheralBlood(findingType) {
-    if (PERIPHERAL_BLOOD[findingType]) {
-        insertTemplate(PERIPHERAL_BLOOD[findingType]);
+    try {
+        if (PERIPHERAL_BLOOD && PERIPHERAL_BLOOD[findingType]) {
+            insertTemplate(PERIPHERAL_BLOOD[findingType]);
+        }
+    } catch (error) {
+        console.error('Error in insertPeripheralBlood:', error);
     }
 }
 
 function insertIHCStain(stainType) {
-    if (IHC_STAINS[stainType]) {
-        insertTemplate(IHC_STAINS[stainType]);
+    try {        
+        if (IHC_STAINS && IHC_STAINS[stainType]) {
+            insertTemplate(IHC_STAINS[stainType]);
+        }
+    } catch (error) {
+        console.error('Error in insertIHCStain:', error);
     }
 }
 
