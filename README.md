@@ -108,6 +108,16 @@ The application includes 60+ medical abbreviations from Dr. Loneman's quick text
 
 [View complete reference by clicking the ❓ button in the application]
 
+## 🙏 Acknowledgments
+
+This application incorporates medical templates and expertise generously contributed by:
+
+- **Dr. Megan Fitzpatrick** - Lymphoid tissue pathology templates and clinical insights
+- **Dr. Derek Loneman** - Text expansion codes and bone marrow pathology templates  
+- **Mass General Brigham Pathology** - Institutional support and template validation
+
+Their contributions to the hematopathology community make tools like this possible, improving efficiency and consistency in diagnostic reporting.
+
 ## 🤝 Contributing
 
 This is a medical tool designed for pathologists and medical professionals. Contributions should maintain medical accuracy and HIPAA compliance.
@@ -124,3 +134,5 @@ This tool is designed to assist in report generation but does not replace medica
 
 **Created for the hematopathology community** 🔬  
 *Streamlining report generation while maintaining accuracy and compliance*
+
+*With gratitude to Dr. Megan Fitzpatrick, Dr. Derek Loneman, and Mass General Brigham Pathology*
