@@ -132,9 +132,9 @@ const ASPIRATE_TEMPLATES = {
 Aspirate adequacy: Adequate, spicular
 Touch prep: Adequate.
 
-Myeloid lineage maturation is complete, with no significant abnormalities.
-Erythroid lineage maturation is complete, with no significant abnormalities.
-Megakaryocytes are present, with no significant abnormalities.
+Myeloid lineage maturation is complete and without significant abnormalities.
+Erythroid lineage maturation is complete and without significant abnormalities.
+Megakaryocytes are present and without significant abnormalities.
 [Lymphocytes and plasma cells: features and distribution.]`,
 
     detailed: `ASPIRATE:
