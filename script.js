@@ -630,12 +630,20 @@ function insertParsedParagraph() {
 }
 
 // Template Functions
-function insertCoreTemplate() {
+function insertCoreBasicTemplate() {
     insertTemplate(CORE_TEMPLATES.basic);
 }
 
-function insertAspirateTemplate() {
+function insertCoreDetailedTemplate() {
+    insertTemplate(CORE_TEMPLATES.detailed);
+}
+
+function insertAspirateBasicTemplate() {
     insertTemplate(ASPIRATE_TEMPLATES.basic);
+}
+
+function insertAspirateDetailedTemplate() {
+    insertTemplate(ASPIRATE_TEMPLATES.detailed);
 }
 
 function insertLymphoidTemplate(type) {
