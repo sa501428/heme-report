@@ -659,7 +659,9 @@ const IHC_STAINS = {
     congo: 'Congo Red special stain shows .',
     giemsa: 'A Giemsa special stain was performed to evaluate mast cells and plasma cells.',
     p53: 'P53 stain shows scattered staining.',
-    blasts: 'CD34+ CD117+ blasts are X% of cellularity by CD34 immunostain and CD117/GATA-1 double stains.'
+    blasts: 'CD34+ CD117+ blasts are X% of cellularity by CD34 immunostain and CD117/GATA-1 double stains.',
+    monotypic_lc: 'Plasma cells are monotypic for kappa/lambda light chains by immunohistochemistry/in situ hybridization.',
+    polytypic_lc: 'Plasma cells are polytypic by in situ hybridization/immunohistochemistry for kappa and lambda light chains.'
 };
 
 // Template Functions
