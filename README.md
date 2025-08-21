@@ -110,13 +110,14 @@ The application includes 60+ medical abbreviations from Dr. Loneman's quick text
 
 ## 🙏 Acknowledgments
 
-This application incorporates medical templates and expertise generously contributed by:
+This application incorporates medical templates from:
+- **Dr. Megan Fitzpatrick**
+- **Dr. Derek Loneman**
+- **Dr. Miekan Stonhill**
+- **Mass General Brigham Pathology**
 
-- **Dr. Megan Fitzpatrick** - Lymphoid tissue pathology templates and clinical insights
-- **Dr. Derek Loneman** - Text expansion codes and bone marrow pathology templates  
-- **Mass General Brigham Pathology** - Institutional support and template validation
+**Important:** This is an independent, open source project created for educational and experimental use. It is not endorsed by or funded by Mass General Brigham, any hospital system, or medical institution. This tool was developed independently using publicly available medical knowledge and templates (with inspiration from https://mghres.shinyapps.io/HemepathMGB/ v0.3).
 
-Their contributions to the hematopathology community make tools like this possible, improving efficiency and consistency in diagnostic reporting.
 
 ## 🤝 Contributing
 
@@ -124,7 +125,9 @@ This is a medical tool designed for pathologists and medical professionals. Cont
 
 ## 📄 License
 
-For medical and educational use. Please ensure compliance with your institution's software policies.
+This is an open source project for medical and experimental use. Please ensure compliance with your institution's software policies.
+
+**Disclaimer:** This project is independently developed and is not sponsored, endorsed, or affiliated with any medical institution, hospital system, or healthcare organization.
 
 ## ⚠️ Disclaimer
 
@@ -135,4 +138,4 @@ This tool is designed to assist in report generation but does not replace medica
 **Created for the hematopathology community** 🔬  
 *Streamlining report generation while maintaining accuracy and compliance*
 
-*With gratitude to Dr. Megan Fitzpatrick, Dr. Derek Loneman, and Mass General Brigham Pathology*
+*With gratitude to Dr. Megan Fitzpatrick, Dr. Derek Loneman, Dr. Miekan Stonhill, and Mass General Brigham Pathology*
