@@ -47,7 +47,8 @@ const LONEMAN_QUICK_TEXTS = {
     'lplac': 'Extensive interstitial infiltration by predominantly small lymphocytes with round to slightly irregular nuclei, moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm; a subset of plasmacytoid cells contain moderate amounts of cytoplasm with eccentric nuclei. Admixed plasma cells are also seen.',
     'cllac': 'Lymphocytes: Large paratrabecular aggregates of small cells with round to slightly irregular nuclei, clumped chromatin, inconspicuous nucleoli, and scant cytoplasm. An immunostain reveals the cells to be B cells (PAX5+) with aberrant expression of CD5 and which constitute >90% of the cellularity.',
     'cllasp': 'Lymphocytes: Small- to medium-sized cells with round to slightly irregular nuclei, clumped to moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm.',
-    'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.'
+    'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.',
+    'fdc':'follicular dendritic cell'
 };
 
 // Lymphoid Templates
