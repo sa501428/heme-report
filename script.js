@@ -603,6 +603,29 @@ function generateCBCParagraph(parsed) {
         }
     }
     
+    // Add morphology and special findings
+    const morphology = parsed.morphology;
+    if (morphology && Object.keys(morphology).length > 0) {
+        const morphParts = [];
+        
+        // Handle NRBC specifically
+        if (morphology.nrbc) {
+            morphParts.push(`${morphology.nrbc}% nucleated red blood cells`);
+        }
+        
+        // Handle other morphology findings
+        Object.keys(morphology).forEach(key => {
+            if (key !== 'nrbc' && morphology[key]) {
+                const displayName = key.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+                morphParts.push(`${displayName}: ${morphology[key]}`);
+            }
+        });
+        
+        if (morphParts.length > 0) {
+            paragraph += ` Special findings include ${morphParts.join(', ')}.`;
+        }
+    }
+    
     // Store for potential insertion
     window.cbcParagraph = paragraph;
     
