@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hematopathology Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🩸 Hematopathology Report Generator</h1>
+            <p class="subtitle">HIPAA Compliant - No Data Transfer - Local Processing Only</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar Panel -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h2>📋 Templates & Tools</h2>
+                    <button class="sidebar-toggle" id="sidebar-toggle">◀</button>
+                </div>
+
+                <div class="template-sections">
+                    <!-- Epic Data Parser Section -->
+                    <div class="template-section" id="epic-section">
+                        <div class="section-header" onclick="toggleSection('epic-content')">
+                            <h3>🏥 Epic Data Parser</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content" id="epic-content">
+                            <div class="form-group">
+                                <label for="epic-data-input">Paste CBC & Differential Data</label>
+                                <textarea id="epic-data-input" placeholder="Paste CBC and differential data from Epic...&#10;&#10;Example:&#10;CBC 04/15/2024&#10;WBC: 8.5 K/uL&#10;HGB: 12.3 g/dL&#10;HCT: 36.8%&#10;PLT: 245 K/uL&#10;&#10;Auto Differential:&#10;Neutrophils: 62.5%&#10;Lymphocytes: 28.3%&#10;Monocytes: 7.2%"></textarea>
+                            </div>
+                            <div class="button-group">
+                                <button class="btn btn-primary" onclick="parseEpicData()">Parse Data</button>
+                                <button class="btn btn-secondary" onclick="clearEpicData()">Clear</button>
+                            </div>
+                            <div id="parsing-results" class="parsing-results" style="display: none;">
+                                <h4>Parsed Results:</h4>
+                                <div id="parsed-cbc" class="parsed-section">
+                                    <h5>CBC Results:</h5>
+                                    <div id="cbc-values"></div>
+                                </div>
+                                <div id="parsed-auto-diff" class="parsed-section">
+                                    <div id="auto-diff-values"></div>
+                                </div>
+                                <div id="parsed-manual-diff" class="parsed-section">
+                                    <div id="manual-diff-values"></div>
+                                </div>
+                                <div id="parsing-errors" class="parsing-errors" style="display: none;">
+                                    <h5>Parsing Errors:</h5>
+                                    <div id="error-messages"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Biopsy Template Section -->
+                    <div class="template-section" id="core-section">
+                        <div class="section-header" onclick="toggleSection('core-content')">
+                            <h3>🧬 Core Biopsy Template</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="core-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertCoreTemplate()">Insert Core Template</button>
+                                <button class="btn btn-template" onclick="showCoreForm()">Interactive Form</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Core Biopsy Template:</strong> Includes adequacy, cellularity, M:E ratio, and detailed cell line descriptions</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aspirate Template Section -->
+                    <div class="template-section" id="aspirate-section">
+                        <div class="section-header" onclick="toggleSection('aspirate-content')">
+                            <h3>💉 Aspirate Template</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="aspirate-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertAspirateTemplate()">Insert Aspirate Template</button>
+                                <button class="btn btn-template" onclick="showAspirateForm()">Interactive Form</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Aspirate Template:</strong> Includes adequacy, spicules, touch prep, and cellular morphology</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lymphoid Template Section -->
+                    <div class="template-section" id="lymphoid-section">
+                        <div class="section-header" onclick="toggleSection('lymphoid-content')">
+                            <h3>🔬 Lymphoid Templates</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="lymphoid-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertLymphoidTemplate('reactive')">Reactive Hyperplasia</button>
+                                <button class="btn btn-template" onclick="insertLymphoidTemplate('follicular')">Follicular Lymphoma</button>
+                                <button class="btn btn-template" onclick="insertLymphoidTemplate('dlbcl')">DLBCL</button>
+                                <button class="btn btn-template" onclick="insertLymphoidTemplate('hodgkin')">Hodgkin Lymphoma</button>
+                                <button class="btn btn-template" onclick="showLymphoidForm()">Interactive Form</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Expansion Reference -->
+                    <div class="template-section" id="expansion-section">
+                        <div class="section-header" onclick="toggleSection('expansion-content')">
+                            <h3>⚡ Text Expansion</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="expansion-content">
+                            <div class="expansion-info">
+                                <p><strong>Press F8</strong> to expand codes:</p>
+                                <div class="expansion-examples">
+                                    <div class="example-code">
+                                        <span class="code">mmneg</span> → CD138 immunostain negative
+                                    </div>
+                                    <div class="example-code">
+                                        <span class="code">lsbc</span> → left-shifted but complete
+                                    </div>
+                                    <div class="example-code">
+                                        <span class="code">mgkmf</span> → megakaryocytes with clustering
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary" onclick="showExpansionHelp()">View All Codes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <div class="editor-header">
+                    <div class="editor-controls">
+                        <button class="btn btn-primary" onclick="copyToClipboard()">📋 Copy</button>
+                        <button class="btn btn-secondary" onclick="clearEditor()">🗑️ Clear</button>
+                        <button class="btn btn-secondary" onclick="downloadReport()">💾 Download</button>
+                        <button class="btn btn-secondary" onclick="printReport()">🖨️ Print</button>
+                    </div>
+                    <div class="editor-info">
+                        <span class="char-count" id="char-count">0 characters</span>
+                    </div>
+                </div>
+
+                <div class="editor-container">
+                    <textarea 
+                        id="main-editor" 
+                        class="main-editor" 
+                        placeholder="Start typing your report here...&#10;&#10;💡 Tips:&#10;• Type any expansion code and press F8 to expand&#10;• Use the sidebar templates to insert formatted sections&#10;• Parse Epic data to auto-populate CBC information&#10;• All data stays local - nothing is sent to external servers"
+                        spellcheck="true"
+                    ></textarea>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modal for Interactive Forms -->
+        <div id="form-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">Interactive Form</h2>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="insertFromForm()">Insert into Report</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Button -->
+        <button id="floating-help-button" class="floating-help" onclick="showExpansionHelp()">
+            ❓
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

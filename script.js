@@ -1,0 +1,856 @@
+// Unified Hematopathology Report Generator
+// Combines functionality from marrow and lymphoid reference tools
+
+// Text Expansion Data (from Loneman Quick Texts)
+const LONEMAN_QUICK_TEXTS = {
+    'mmneg': 'An immunostain for CD138 does not reveal any definitive plasma cells. Too few plasma cells are present to evaluate by in-situ hybridization for kappa and lambda.',
+    'mmnegtop': '__cellular marrow with maturing trilineage hematopoiesis. There is no morphologic or immunophenotypic evidence of a plasma cell neoplasm.',
+    'mmpos': 'An immunostain for CD138 highlights singly scattered and small, perivascular clusters of plasma cells (<5% of cells) which are monotypic for kappa by in-situ hybridization for kappa and lambda light chains.',
+    'noplas': 'No circulating plasma cells are seen.',
+    'cyclinneg': 'Cyclin D1 is negative in plasma cells.',
+    'plasasp': 'Plasma cells: Medium- to large-sized cells with round nuclei, condensed chromatin, and abundant cytoplasm. Occasional binucleate forms are seen.',
+    'corrplas': 'COMMENT: Clinical, radiographic, and laboratory correlation are required for definitive classification.',
+    'congoneg': 'A Congo red stain is negative for amyloid.',
+    'congopos': 'A Congo red stain highlights perivascular amyloid deposition.',
+    'knownmm': 'Involvement by the patient\'s known PLASMA CELL NEOPLASM.',
+    'mmcyto': 'Cytology: Intermediate- to large-sized cells with round to irregular nuclear contours, coarse chromatin, variably prominent nucleoli, and moderate to abundant cytoplasm. Occasional multinucleated forms are seen.',
+    'mmcore': 'Architecture: Patchy interstitial infiltration.',
+    'corrcyto': 'COMMENT: Correlation with concurrent cytogenetics is recommended.',
+    'polykl': 'polytypic by in-situ hybridization for kappa and lambda light chains.',
+    'corrmol': 'COMMENT: Correlation with pending molecular and cytogenetic studies is recommended.',
+    'corrmolcyto': 'COMMENT: Correlation with pending molecular and cytogenetic studies is recommended.',
+    'corrmolcytochim': 'COMMENT: Correlation with pending molecular, cytogenetic, and chimerism studies is recommended.',
+    'corrmolcytomrd': 'COMMENT: Correlation with pending minimal residual disease, molecular, and cytogenetic studies is recommended.',
+    'cd34n': 'Blasts are not increased (<5% of cells) by a CD34 immunostain.',
+    'p53n': 'A p53 stain shows variably staining, suggestive of wild-type expression.',
+    'header': 'A-C. BONE MARROW CORE BIOPSY AND ASPIRATE SMEARS, PERIPHERAL BLOOD SMEAR:',
+    'lsbc': 'left-shifted but complete.',
+    'limitedbx': 'Limited; predominantly blood and soft tissue with only a small area of evaluable marrow.',
+    'fewnormal': 'Normal hematopoietic elements are markedly decreased and [cannot be adequately evaluated]/[difficult to evaluate]',
+    'nonheme': 'Note: Most of the cellularity consists of stromal cells; histiocytes (including frequent hemosiderin-laden cells); lymphocytes; and singly scattered and small, perivascular aggregates of mature-appearing plasma cells. The lymphocytes are seen singly scattered in the interstitium and in occasional small, interstitial aggregates. Lymphocytes appear small- to intermediate-sized with round to irregular nuclear contours, condensed to moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm.',
+    'nodx': 'No morphologic or flow cytometric features of the patient\'s known ___ are seen.',
+    'altcell': 'A recent study has shown that marrow cellularity declines with age at a slower rate than previously assumed, and the mean cellularity for this patient\'s age group is ~44% (standard deviation ~11%, PMID: 37904278).',
+    'mgkmf': 'with frequent tight clustering, occasional paratrabecular localization, and exhibiting a morphologic spectrum, from hypolobated to hyperlobated forms and including occasional bulbous, hyperchromatic cells.',
+    'mdsmpn': 'with focal clustering and exhibiting morphologic heterogeneity: some cells are overtly dysplastic, including small, hypolobated forms and occasional cells with separated nuclear lobes. Other cells are atypical, including hyperlobated forms and occasional bulbous, hyperchromatic cells with high N:C ratio.',
+    'mgknorm': 'adequate in number and with overall normal morphology.',
+    'blastcore': 'Architecture: Diffuse sheets. Cytology: Predominantly intermediate-sized cells with ovoid to irregular nuclei, finely dispersed chromatin, variably prominent nucleoli, and scant to moderate amounts of cytoplasm.',
+    'inadeq': 'Note: The aspirate smear(s) and touch prep contain inadequate numbers of maturing hematopoietic elements for cellular enumeration or morphologic evaluation.',
+    'celllimit': 'Maturing myeloids and erythroids are markedly decreased but without overt morphologic abnormalities.',
+    'feneg': 'adequate storage iron. Ring sideroblasts do not appear increased.',
+    'felow': 'Storage iron appears decreased, correlation with serum iron studies recommended.',
+    'mdys': 'dysplastic, with hypogranular and hyposegmented cells.',
+    'edys': 'dysplastic, with occasional nuclear-cytoplasmic asynchrony and multinucleated cells.',
+    'mgkdys': 'dysplastic, with hypolobated forms and occasional cells with separated nuclear lobes.',
+    'blastasp': 'Predominantly medium-sized cells with round to irregular nuclear countours, finely dispersed chromatin, prominent nucleoli, and scant to moderate basophilic cytoplasm with occasional sparse granulation',
+    'pbsleb': 'red cell anisopoikilocytosis with frequent dacrocytes and occasional nucleated red cells; thrombocytopenia with occasional large platelets; and maturing and left-shifted myeloids, including occasional blasts, consistent with an leukoerythroblastic reaction.',
+    'pbsmds': 'red cell anisopoikilocytosis; thrombocytopenia with occasional large platelets; and occasional hypogranular and hyposegmented neutrophils, including pseudo-Pelger-Huet cells',
+    'lplac': 'Extensive interstitial infiltration by predominantly small lymphocytes with round to slightly irregular nuclei, moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm; a subset of plasmacytoid cells contain moderate amounts of cytoplasm with eccentric nuclei. Admixed plasma cells are also seen.',
+    'cllac': 'Lymphocytes: Large paratrabecular aggregates of small cells with round to slightly irregular nuclei, clumped chromatin, inconspicuous nucleoli, and scant cytoplasm. An immunostain reveals the cells to be B cells (PAX5+) with aberrant expression of CD5 and which constitute >90% of the cellularity.',
+    'cllasp': 'Lymphocytes: Small- to medium-sized cells with round to slightly irregular nuclei, clumped to moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm.',
+    'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.'
+};
+
+// Lymphoid Templates
+const LYMPHOID_TEMPLATES = {
+    reactive: `RLHSYN (Reactive lymphoid hyperplasia Synoptic Report)
+
+Reactive lymphoid hyperplasia. (See note.)
+
+Note: The specimen is a [slightly/moderately/markedly] enlarged lymph node with architecture that is [intact/distorted but not obliterated/effaced]. The lymph node shows [prominent follicular hyperplasia/crowded, poorly-delineated follicles/diffuse infiltrate], with [small/large/small and large/round to oval/irregular] follicles with active germinal centers. Mantle zones are [intact/expanded/attenuated/absent]. The paracortex is [hyperplastic/occupied by small lymphocytes], and is occupied by small lymphocytes, scattered histiocytic/dendritic cells, [none/scattered/many] eosinophils, [few/occasional/many] [mature/immature] plasma cells.
+
+Concurrent flow cytometry (see below) shows no clonal B-cell or atypical T-cell population.
+
+In summary, the findings are consistent with reactive lymphoid hyperplasia, with no specific evidence of lymphoma or of any other neoplasm.`,
+
+    follicular: `FLSYN (Follicular lymphoma Synoptic Report)
+
+Follicular lymphoma, [follicular/follicular and diffuse/predominantly diffuse] pattern, grade [1 to 2 of 3/3A/3B] [with a high proliferation index]. (See note.)
+
+Note: The specimen is a [slightly/markedly] enlarged lymph node that is almost entirely replaced by a proliferation of crowded, poorly-delineated follicles composed of centrocytes and [occasional/many] centroblasts, with [fewer than 15 centroblasts per hpf/many centroblasts (>15 per hpf)] in a background of centrocytes. Mantles are [attenuated/absent]. [Few mitotic figures/Many mitotic figures] are seen. [Areas of necrosis are present/No necrosis identified].
+
+Immunostains show numerous B cells (CD20+) in a follicular pattern. B cells in follicles co-express [CD10/Bcl6/Bcl2], and are negative for [CD5/cyclin D1]. Ki67 shows a proliferation index of [XX%]. 
+
+Concurrent flow cytometry (see below) demonstrates ----------
+
+The histologic and immunophenotypic features together support a diagnosis of follicular lymphoma.`,
+
+    dlbcl: `DLBSYN (Diffuse large B-cell lymphoma Synoptic Report)
+
+Diffuse large B-cell lymphoma. (See note.)
+
+Note: The specimen is a [slightly/markedly] enlarged lymph node that is almost entirely replaced by a diffuse infiltrate of large atypical lymphoid cells with [oval/irregular/lobated] nuclei, [prominent] nucleoli, and [scant/moderate] quantity of pale cytoplasm. [Scattered mitotic figures are seen/Many mitotic figures are present]. [Areas of necrosis are present/No necrosis identified].
+
+Immunostains show numerous B cells (CD20+) in a diffuse pattern. B cells show the following immunophenotype: CD10 [positive/negative], BCL6 [positive/negative], MUM1 [positive/negative]. BCL2 is [positive/negative] and MYC is [positive/negative]. Based on Hans criteria, this represents a [GCB/Non-GCB/unclassifiable] type DLBCL. [This represents a double hit/triple hit lymphoma]. Ki67 shows a proliferation index of [XX%].
+
+Concurrent flow cytometry (see below) demonstrates ----------
+
+The histologic and immunophenotypic features together support a diagnosis of diffuse large B-cell lymphoma of [germinal center/activated B-cell] origin [with double hit features].`,
+
+    hodgkin: `CHLSYN (Classical Hodgkin lymphoma Synoptic Report)
+
+Classic Hodgkin lymphoma, [nodular sclerosis/mixed cellularity/lymphocyte rich/lymphocyte depleted] sub-type. (See note.)
+
+Note: The specimen is a markedly enlarged lymph node with architectural effacement by a mixed inflammatory cell infiltrate consisting of small lymphocytes, histiocytes, granulocytes including eosinophils, plasma cells and large atypical cells. The latter have large [oval/irregular/lobated] nuclei, prominent eosinophilic nucleoli, and [scant/moderate] quantity of pale cytoplasm. [Occasional binucleate/multinucleate] forms are seen, as well as [lacunar cells/mummified cells]. The appearance of the large cells is consistent with Reed-Sternberg cells and variants.
+
+Immunostains show that the large atypical cells are positive for [CD30/CD15/MUM1] and negative for [CD20/CD45]. In situ hybridization for Epstein-Barr virus (EBER) shows [no staining/staining of large cells]. The small lymphocytes are a mixture of T cells (CD3+) and fewer small B cells (CD20+).
+
+Concurrent flow cytometry (see below) shows no abnormal B or T-cell population.
+
+The histologic and immunophenotypic findings together support a diagnosis of classic Hodgkin lymphoma, [sub-type].`
+};
+
+// Core Biopsy Templates
+const CORE_TEMPLATES = {
+    basic: `CORE BIOPSY:
+Biopsy adequacy: [Adequate/Limited/Inadequate]; [fragmented/adequate].
+Marrow biopsy cellularity: [XX%]; age adjusted [normocellular/hypocellular/hypercellular].
+Myeloid:Erythroid ratio is [normal/increased/decreased/reversed].
+
+Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features including ____].
+Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features including ____].
+Megakaryocytes are [adequate/decreased/increased] [with ____].
+
+[Lymphoid aggregates: ____.]
+[Hemosiderin-laden macrophages: ____.]
+[Other findings: ____.]`,
+
+    detailed: `CORE BIOPSY:
+Biopsy adequacy: [Adequate/Limited/Inadequate]; [describe limitations if any].
+
+Marrow biopsy cellularity: [XX%]; age adjusted [normocellular/hypocellular/hypercellular].
+
+Myeloid:Erythroid ratio is [normal/increased/decreased/reversed].
+
+Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed myeloid findings: left shift, maturation arrest, hyposegmentation, hypogranulation, Auer rods, dysmyelopoiesis, ALIP, etc.]
+
+Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed erythroid findings: megaloblastic change, nuclear budding, multinuclearity, hypochromia, disordered maturation, etc.]
+
+Megakaryocytes are [adequate/decreased/increased] [with size variations, nuclear features, clustering, paratrabecular localization, etc.]. [Megakaryocyte IHC shows ____.]
+
+Lymphocytes and plasma cells demonstrate [small mature lymphocytes/atypical lymphocytes/reactive features/distribution patterns].
+
+Architecture & Other Findings:
+[Lymphoid aggregates: paratrabecular/interstitial/nodular/diffuse.]
+[Hemosiderin-laden macrophages: rare/few/numerous.]
+[Other core findings: granulomas/hemophagocytosis/mast cell aggregates/necrosis/osteosclerosis.]`
+};
+
+// Aspirate Templates
+const ASPIRATE_TEMPLATES = {
+    basic: `ASPIRATE:
+Aspirate adequacy: [Adequate/Limited/Inadequate], spicules: [Present/Absent/Scant], touch prep: [Adequate/Limited/Inadequate].
+
+Megakaryocytes are [adequate/decreased/increased] [with morphologic features].
+Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features].
+Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features].
+[Lymphocytes and plasma cells: features and distribution.]`,
+
+    detailed: `ASPIRATE:
+Aspirate adequacy: [Adequate/Limited/Inadequate], spicules: [Present/Absent/Scant], touch prep: [Adequate/Limited/Inadequate].
+
+Megakaryocytes are [adequate/decreased/increased] with [micromegakaryocytes/giant megakaryocytes/hypolobated nuclei/hyperlobated nuclei/dysplastic features/normal morphology].
+
+Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [megaloblastic change/nuclear budding/hypochromia/dyserythropoiesis/maturation patterns].
+
+Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [left shift/maturation arrest/hyposegmentation/hypogranulation/toxic granulation/Auer rods/dysmyelopoiesis].
+
+Lymphocytes and plasma cells demonstrate [small mature lymphocytes/reactive lymphocytes/atypical lymphocytes/plasmacytoid features/distribution patterns].`
+};
+
+// Epic Data Parser Class
+class EpicDataParser {
+    constructor() {
+        this.cbcPatterns = {
+            date: /(\d{1,2}\/\d{1,2}\/\d{2,4}|\d{1,2}-\d{1,2}-\d{2,4})/,
+            wbc: /WBC[:\s]*(\d+\.?\d*)/i,
+            rbc: /RBC[:\s]*(\d+\.?\d*)/i,
+            hgb: /H[GH]B[:\s]*(\d+\.?\d*)/i,
+            hct: /HCT[:\s]*(\d+\.?\d*)/i,
+            mcv: /MCV[:\s]*(\d+\.?\d*)/i,
+            mch: /MCH[:\s]*(\d+\.?\d*)/i,
+            mchc: /MCHC[:\s]*(\d+\.?\d*)/i,
+            plt: /PLT[:\s]*(\d+\.?\d*)/i,
+            mpv: /MPV[:\s]*(\d+\.?\d*)/i,
+            rdw: /RDW[:\s]*(\d+\.?\d*)/i
+        };
+
+        this.morphologyPatterns = {
+            toxicGranulation: /Toxic\s+Granulation[:\s]*([A-Z]+)/i,
+            giantPlatelets: /PLTS,\s*giant[:\s]*([A-Z]+)/i,
+            rbcMorph: /RBC\s+MORPH[:\s]*([A-Z\s]+)/i,
+            atypicalLymphs: /Lymphs,\s*atypical\/reactive[:\s]*(\d+\.?\d*)/i
+        };
+    }
+
+    parseCBC(text) {
+        const results = {};
+        if (!text) return results;
+
+        Object.keys(this.cbcPatterns).forEach(key => {
+            const match = text.match(this.cbcPatterns[key]);
+            if (match) {
+                results[key] = key === 'date' ? match[1] : parseFloat(match[1]);
+            }
+        });
+
+        return results;
+    }
+
+    parseDifferential(text) {
+        const results = {};
+        if (!text) return results;
+
+        const diffMethodMatch = text.match(/Diff Method[:\s]*(.+)/i);
+        const diffMethod = diffMethodMatch ? diffMethodMatch[1].trim() : null;
+        
+        if (diffMethod && diffMethod.includes('not performed')) {
+            results.diffMethod = diffMethod;
+            return results;
+        }
+
+        results.diffMethod = diffMethod || 'Unknown';
+
+        const lines = text.split('\n');
+        const allMatches = [];
+        
+        for (const line of lines) {
+            if (line.includes('#')) continue;
+            
+            const percentMatch = line.match(/^([^:]+?)(?:\s*\([^)]*\))?\s*:\s*(\d+\.?\d*)/);
+            
+            if (percentMatch) {
+                const cellType = percentMatch[1].trim();
+                const percentage = parseFloat(percentMatch[2]);
+                
+                const normalizedType = this.normalizeCellType(cellType);
+                if (normalizedType && !isNaN(percentage)) {
+                    let priority = 0;
+                    if (cellType.includes('(%)') || cellType.includes('% (')) {
+                        priority = 3;
+                    } else if (cellType.includes('(')) {
+                        priority = 2;
+                    } else {
+                        priority = 1;
+                    }
+                    
+                    allMatches.push({
+                        normalizedType,
+                        percentage,
+                        priority,
+                        originalLine: line
+                    });
+                }
+            }
+        }
+        
+        const typeGroups = {};
+        allMatches.forEach(match => {
+            if (!typeGroups[match.normalizedType] || 
+                typeGroups[match.normalizedType].priority < match.priority) {
+                typeGroups[match.normalizedType] = match;
+            }
+        });
+        
+        Object.values(typeGroups).forEach(match => {
+            results[match.normalizedType] = match.percentage;
+        });
+
+        return results;
+    }
+
+    parseMorphology(text) {
+        const results = {};
+        if (!text) return results;
+
+        Object.keys(this.morphologyPatterns).forEach(key => {
+            const match = text.match(this.morphologyPatterns[key]);
+            if (match) {
+                results[key] = match[1].trim();
+            }
+        });
+
+        const nrbcMatch = text.match(/NRBC%[^:]*:\s*(\d+\.?\d*)/i);
+        if (nrbcMatch) {
+            results.nrbc = parseFloat(nrbcMatch[1]);
+        }
+
+        return results;
+    }
+
+    normalizeCellType(cellType) {
+        const normalized = cellType.toLowerCase().trim();
+        
+        const typeMap = {
+            'neutrophils': 'neutrophils', 'neutrophil': 'neutrophils', 'polys': 'neutrophils', 'poly': 'neutrophils',
+            'lymphs': 'lymphocytes', 'lymphocytes': 'lymphocytes', 'lymph': 'lymphocytes',
+            'monos': 'monocytes', 'monocytes': 'monocytes', 'mono': 'monocytes',
+            'eos': 'eosinophils', 'eosinophils': 'eosinophils', 'eosinophil': 'eosinophils',
+            'basos': 'basophils', 'basophils': 'basophils', 'basophil': 'basophils',
+            'bands': 'bands', 'band': 'bands',
+            'blasts': 'blasts', 'blast': 'blasts',
+            'metamyelocytes': 'metamyelocytes', 'metamyelo': 'metamyelocytes', 'meta': 'metamyelocytes',
+            'myelocytes': 'myelocytes', 'myelo': 'myelocytes',
+            'promyelocytes': 'promyelocytes', 'promyelo': 'promyelocytes',
+            'atypical lymphs': 'atypical_lymphocytes', 'reactive lymphs': 'atypical_lymphocytes',
+            'lymphs, atypical/reactive (auto)': 'atypical_lymphocytes',
+            'granulocytes, immature': 'immature_granulocytes', 'granulocytes,immature': 'immature_granulocytes',
+            'granulocytes, immature (%)': 'immature_granulocytes', 'granulocytes,immature (%)': 'immature_granulocytes',
+            'immature granulocytes': 'immature_granulocytes',
+            'nrbc% (auto)': 'nrbc', 'nrbc%': 'nrbc'
+        };
+
+        return typeMap[normalized] || null;
+    }
+
+    parseAll(text) {
+        const cbc = this.parseCBC(text);
+        const differential = this.parseDifferential(text);
+        const morphology = this.parseMorphology(text);
+        
+        return { cbc, differential, morphology, raw: text };
+    }
+}
+
+// Main Application Class
+class HemeReportApp {
+    constructor() {
+        this.epicParser = new EpicDataParser();
+        this.currentModalType = null;
+        this.initialize();
+    }
+
+    initialize() {
+        this.setupEventListeners();
+        this.setupTextExpansion();
+        this.loadSavedData();
+        this.updateCharacterCount();
+    }
+
+    setupEventListeners() {
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', this.toggleSidebar);
+        
+        // Editor functionality
+        const editor = document.getElementById('main-editor');
+        editor.addEventListener('input', () => {
+            this.updateCharacterCount();
+            this.autoSave();
+        });
+
+        // Modal close
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'form-modal') {
+                this.closeModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('form-modal').style.display === 'block') {
+                this.closeModal();
+            }
+        });
+    }
+
+    setupTextExpansion() {
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F8') {
+                event.preventDefault();
+                this.handleTextExpansion(event.target);
+            }
+        });
+    }
+
+    handleTextExpansion(targetElement) {
+        if (!this.isTextInputElement(targetElement)) return;
+
+        const cursorPosition = targetElement.selectionStart;
+        const textBeforeCursor = targetElement.value.substring(0, cursorPosition);
+        
+        const wordMatch = textBeforeCursor.match(/\S+$/);
+        if (!wordMatch) return;
+
+        const word = wordMatch[0];
+        const wordStartPosition = cursorPosition - word.length;
+        
+        const matchingCode = this.findMatchingCode(word);
+        if (matchingCode) {
+            const expandedText = LONEMAN_QUICK_TEXTS[matchingCode];
+            
+            const textBefore = targetElement.value.substring(0, wordStartPosition);
+            const textAfter = targetElement.value.substring(cursorPosition);
+            
+            targetElement.value = textBefore + expandedText + textAfter;
+            
+            const newCursorPosition = wordStartPosition + expandedText.length;
+            targetElement.selectionStart = newCursorPosition;
+            targetElement.selectionEnd = newCursorPosition;
+            
+            targetElement.dispatchEvent(new Event('input', { bubbles: true }));
+            
+            // Text expanded silently
+        }
+    }
+
+    isTextInputElement(element) {
+        return element && (
+            element.tagName === 'TEXTAREA' ||
+            (element.tagName === 'INPUT' && element.type === 'text')
+        );
+    }
+
+    findMatchingCode(word) {
+        const lowerWord = word.toLowerCase();
+        if (LONEMAN_QUICK_TEXTS[lowerWord]) return lowerWord;
+        
+        for (const code in LONEMAN_QUICK_TEXTS) {
+            if (code.toLowerCase() === lowerWord) return code;
+        }
+        
+        return null;
+    }
+
+    toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+    }
+
+    updateCharacterCount() {
+        const editor = document.getElementById('main-editor');
+        const charCount = document.getElementById('char-count');
+        const count = editor.value.length;
+        charCount.textContent = `${count.toLocaleString()} characters`;
+    }
+
+    autoSave() {
+        const editor = document.getElementById('main-editor');
+        localStorage.setItem('heme-report-content', editor.value);
+    }
+
+    loadSavedData() {
+        const savedContent = localStorage.getItem('heme-report-content');
+        if (savedContent) {
+            document.getElementById('main-editor').value = savedContent;
+            this.updateCharacterCount();
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Notifications disabled for minimal interface
+        return;
+    }
+
+    closeModal() {
+        document.getElementById('form-modal').style.display = 'none';
+        this.currentModalType = null;
+    }
+}
+
+// Global Functions
+function toggleSection(sectionId) {
+    const content = document.getElementById(sectionId);
+    const header = content.previousElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    
+    content.classList.toggle('collapsed');
+    header.classList.toggle('active');
+    
+    if (content.classList.contains('collapsed')) {
+        icon.textContent = '▶';
+    } else {
+        icon.textContent = '▼';
+    }
+}
+
+// Epic Data Parser Functions
+function parseEpicData() {
+    const inputText = document.getElementById('epic-data-input').value;
+    const resultsDiv = document.getElementById('parsing-results');
+    const cbcDiv = document.getElementById('cbc-values');
+    const autoDiffDiv = document.getElementById('auto-diff-values');
+    const manualDiffDiv = document.getElementById('manual-diff-values');
+
+    if (!inputText.trim()) {
+        return;
+    }
+
+    try {
+        const parsed = window.app.epicParser.parseAll(inputText);
+        
+        resultsDiv.style.display = 'block';
+        
+        // Display CBC results
+        cbcDiv.innerHTML = '';
+        if (Object.keys(parsed.cbc).length > 0) {
+            Object.keys(parsed.cbc).forEach(key => {
+                const value = parsed.cbc[key];
+                const span = document.createElement('span');
+                span.className = 'parsed-value';
+                span.innerHTML = `<strong>${key.toUpperCase()}:</strong> ${value}`;
+                cbcDiv.appendChild(span);
+            });
+        } else {
+            cbcDiv.innerHTML = '<em>No CBC data found</em>';
+        }
+        
+        // Display Differential results
+        autoDiffDiv.innerHTML = '<h5>Differential Results:</h5>';
+        const diffData = parsed.differential;
+        
+        if (diffData.diffMethod) {
+            const methodSpan = document.createElement('div');
+            methodSpan.style.fontStyle = 'italic';
+            methodSpan.style.marginBottom = '8px';
+            methodSpan.innerHTML = `Method: ${diffData.diffMethod}`;
+            autoDiffDiv.appendChild(methodSpan);
+        }
+        
+        if (diffData.diffMethod && diffData.diffMethod.includes('not performed')) {
+            autoDiffDiv.innerHTML += '<em>Differential not performed</em>';
+        } else {
+            const diffKeys = Object.keys(diffData).filter(key => key !== 'diffMethod');
+            if (diffKeys.length > 0) {
+                diffKeys.forEach(key => {
+                    const value = diffData[key];
+                    const span = document.createElement('span');
+                    span.className = 'parsed-value';
+                    span.innerHTML = `<strong>${key.replace('_', ' ')}:</strong> ${value}%`;
+                    autoDiffDiv.appendChild(span);
+                });
+            } else {
+                autoDiffDiv.innerHTML += '<em>No differential data found</em>';
+            }
+        }
+        
+        // Display Morphology results
+        manualDiffDiv.innerHTML = '<h5>Morphology & Special Findings:</h5>';
+        const morphData = parsed.morphology;
+        
+        if (Object.keys(morphData).length > 0) {
+            Object.keys(morphData).forEach(key => {
+                const value = morphData[key];
+                const span = document.createElement('span');
+                span.className = 'parsed-value';
+                if (key === 'nrbc') {
+                    span.innerHTML = `<strong>NRBC:</strong> ${value}%`;
+                } else {
+                    span.innerHTML = `<strong>${key.replace(/([A-Z])/g, ' $1').trim()}:</strong> ${value}`;
+                }
+                manualDiffDiv.appendChild(span);
+            });
+        } else {
+            manualDiffDiv.innerHTML += '<em>No morphology findings</em>';
+        }
+        
+        // Generate narrative paragraph
+        generateCBCParagraph(parsed);
+        
+    } catch (error) {
+        console.error('Parsing error:', error);
+    }
+}
+
+function clearEpicData() {
+    document.getElementById('epic-data-input').value = '';
+    document.getElementById('parsing-results').style.display = 'none';
+}
+
+function generateCBCParagraph(parsed) {
+    let paragraph = '';
+    
+    if (Object.keys(parsed.cbc).length > 0) {
+        const cbc = parsed.cbc;
+        if (cbc.date) {
+            paragraph += `CBC results from ${cbc.date} are as follows: `;
+        } else {
+            paragraph += 'CBC results are as follows: ';
+        }
+        
+        const cbcParts = [];
+        if (cbc.wbc) cbcParts.push(`WBC ${cbc.wbc} K/μL`);
+        if (cbc.rbc) cbcParts.push(`RBC ${cbc.rbc} M/μL`);
+        if (cbc.hgb) cbcParts.push(`HGB ${cbc.hgb} g/dL`);
+        if (cbc.hct) cbcParts.push(`HCT ${cbc.hct}%`);
+        if (cbc.mcv) cbcParts.push(`MCV ${cbc.mcv} fL`);
+        if (cbc.mch) cbcParts.push(`MCH ${cbc.mch} pg`);
+        if (cbc.mchc) cbcParts.push(`MCHC ${cbc.mchc} g/dL`);
+        if (cbc.plt) cbcParts.push(`PLT ${cbc.plt} K/μL`);
+        if (cbc.rdw) cbcParts.push(`RDW ${cbc.rdw}%`);
+        
+        paragraph += cbcParts.join(', ') + '.';
+    }
+    
+    // Add differential info
+    const diff = parsed.differential;
+    if (diff && Object.keys(diff).length > 1) {
+        if (diff.diffMethod && diff.diffMethod.includes('not performed')) {
+            paragraph += ` Differential was not performed due to low WBC count.`;
+        } else {
+            const method = diff.diffMethod || 'Unknown method';
+            paragraph += ` ${method} differential shows `;
+            
+            const diffParts = [];
+            const orderedTypes = ['neutrophils', 'bands', 'lymphocytes', 'atypical_lymphocytes', 'monocytes', 
+                                'eosinophils', 'basophils', 'metamyelocytes', 'myelocytes', 'promyelocytes', 'blasts', 'other'];
+            
+            orderedTypes.forEach(type => {
+                if (diff[type] !== undefined) {
+                    const displayName = type.replace('_', ' ');
+                    diffParts.push(`${diff[type]}% ${displayName}`);
+                }
+            });
+            
+            paragraph += diffParts.join(', ') + '.';
+        }
+    }
+    
+    // Store for potential insertion
+    window.cbcParagraph = paragraph;
+    
+    // Show generated paragraph
+    let paragraphDiv = document.getElementById('generated-paragraph');
+    if (!paragraphDiv) {
+        paragraphDiv = document.createElement('div');
+        paragraphDiv.id = 'generated-paragraph';
+        paragraphDiv.className = 'parsed-section';
+        paragraphDiv.innerHTML = '<h5>Generated Paragraph:</h5><div id="paragraph-text"></div>';
+        document.getElementById('parsing-results').appendChild(paragraphDiv);
+    }
+    
+    const paragraphText = document.getElementById('paragraph-text');
+    if (paragraphText) {
+        paragraphText.innerHTML = `<div style="font-style: italic; padding: 8px; background: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 4px; cursor: pointer;" onclick="insertParsedParagraph()">${paragraph}<br><small style="color: #666;">Click to insert into report</small></div>`;
+    }
+}
+
+function insertParsedParagraph() {
+    if (window.cbcParagraph) {
+        const editor = document.getElementById('main-editor');
+        const cursorPos = editor.selectionStart;
+        const textBefore = editor.value.substring(0, cursorPos);
+        const textAfter = editor.value.substring(cursorPos);
+        
+        editor.value = textBefore + window.cbcParagraph + '\n\n' + textAfter;
+        editor.focus();
+        
+        const newPos = cursorPos + window.cbcParagraph.length + 2;
+        editor.setSelectionRange(newPos, newPos);
+        
+        window.app.updateCharacterCount();
+        window.app.autoSave();
+    }
+}
+
+// Template Functions
+function insertCoreTemplate() {
+    insertTemplate(CORE_TEMPLATES.basic);
+}
+
+function insertAspirateTemplate() {
+    insertTemplate(ASPIRATE_TEMPLATES.basic);
+}
+
+function insertLymphoidTemplate(type) {
+    if (LYMPHOID_TEMPLATES[type]) {
+        insertTemplate(LYMPHOID_TEMPLATES[type]);
+    }
+}
+
+function insertTemplate(template) {
+    const editor = document.getElementById('main-editor');
+    const cursorPos = editor.selectionStart;
+    const textBefore = editor.value.substring(0, cursorPos);
+    const textAfter = editor.value.substring(cursorPos);
+    
+    editor.value = textBefore + template + '\n\n' + textAfter;
+    editor.focus();
+    
+    const newPos = cursorPos + template.length + 2;
+    editor.setSelectionRange(newPos, newPos);
+    
+    window.app.updateCharacterCount();
+    window.app.autoSave();
+}
+
+// Modal Functions
+function showCoreForm() {
+    // This would open a detailed form for core biopsy
+    // Interactive form coming soon
+}
+
+function showAspirateForm() {
+    // This would open a detailed form for aspirate
+    // Interactive form coming soon
+}
+
+function showLymphoidForm() {
+    // This would open a detailed form for lymphoid
+    // Interactive form coming soon
+}
+
+function insertFromForm() {
+    // This would process form data and insert into editor
+    window.app.closeModal();
+}
+
+function closeModal() {
+    window.app.closeModal();
+}
+
+// Editor Functions
+function copyToClipboard() {
+    const editor = document.getElementById('main-editor');
+    if (editor.value.trim() === '') {
+        return;
+    }
+    
+    navigator.clipboard.writeText(editor.value).then(() => {
+        // Copied silently
+    }).catch(() => {
+        // Fallback
+        editor.select();
+        document.execCommand('copy');
+    });
+}
+
+function clearEditor() {
+    if (confirm('Are you sure you want to clear the entire report? This action cannot be undone.')) {
+        document.getElementById('main-editor').value = '';
+        window.app.updateCharacterCount();
+        window.app.autoSave();
+        window.app.showNotification('Editor cleared', 'info');
+    }
+}
+
+function downloadReport() {
+    const editor = document.getElementById('main-editor');
+    if (editor.value.trim() === '') {
+        window.app.showNotification('Nothing to download - editor is empty', 'error');
+        return;
+    }
+    
+    const blob = new Blob([editor.value], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `heme_report_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    window.app.showNotification('Report downloaded successfully!', 'success');
+}
+
+function printReport() {
+    const editor = document.getElementById('main-editor');
+    if (editor.value.trim() === '') {
+        window.app.showNotification('Nothing to print - editor is empty', 'error');
+        return;
+    }
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Hematopathology Report</title>
+                <style>
+                    body { 
+                        font-family: 'Courier New', monospace; 
+                        font-size: 12px; 
+                        line-height: 1.4; 
+                        margin: 20px; 
+                        white-space: pre-wrap;
+                    }
+                    .header { 
+                        text-align: center; 
+                        font-size: 18px; 
+                        font-weight: bold; 
+                        margin-bottom: 20px; 
+                        font-family: Arial, sans-serif;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">Hematopathology Report</div>
+                <div>${editor.value}</div>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+// Text Expansion Help
+function showExpansionHelp() {
+    const modal = document.getElementById('form-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    
+    modalTitle.textContent = 'Text Expansion Reference';
+    
+    let helpHTML = `
+        <div style="background: #e3f2fd; padding: 12px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #2196F3;">
+            <strong>How to use:</strong> Type any CODE (case insensitive) and press <kbd style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px; border: 1px solid #ccc;">F8</kbd> to expand it to the full text.
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <input type="text" id="search-expansions" placeholder="Search codes or text..." style="width: 100%; padding: 10px; border: 2px solid #e1e8ed; border-radius: 6px; font-size: 1rem;">
+        </div>
+        
+        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #e1e8ed; border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                <thead>
+                    <tr style="background: #f8f9fa;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057; width: 120px;">CODE</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #495057;">TEXT</th>
+                    </tr>
+                </thead>
+                <tbody id="expansions-table-body">
+    `;
+    
+    const sortedCodes = Object.keys(LONEMAN_QUICK_TEXTS).sort();
+    sortedCodes.forEach((code, index) => {
+        const text = LONEMAN_QUICK_TEXTS[code];
+        helpHTML += `
+            <tr style="${index % 2 === 0 ? 'background: #fff;' : 'background: #f8f9fa;'}" class="expansion-row">
+                <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; font-family: 'Courier New', monospace; font-weight: 600; color: #2c3e50; vertical-align: top;">${code.toUpperCase()}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #e1e8ed; line-height: 1.4; color: #495057;">${text}</td>
+            </tr>
+        `;
+    });
+    
+    helpHTML += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    modalBody.innerHTML = helpHTML;
+    modal.style.display = 'block';
+    
+    // Add search functionality
+    const searchInput = document.getElementById('search-expansions');
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll('.expansion-row');
+        
+        rows.forEach(row => {
+            const code = row.querySelector('td:first-child').textContent.toLowerCase();
+            const text = row.querySelector('td:last-child').textContent.toLowerCase();
+            
+            if (code.includes(searchTerm) || text.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
+    setTimeout(() => searchInput.focus(), 100);
+}
+
+// Initialize Application
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new HemeReportApp();
+});
