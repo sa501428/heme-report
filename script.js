@@ -102,33 +102,24 @@ The histologic and immunophenotypic findings together support a diagnosis of cla
 // Core Biopsy Templates
 const CORE_TEMPLATES = {
     basic: `CORE BIOPSY:
-Biopsy adequacy: [Adequate/Limited/Inadequate]; [fragmented/adequate].
-Marrow biopsy cellularity: [XX%]; age adjusted [normocellular/hypocellular/hypercellular].
-Myeloid:Erythroid ratio is [normal/increased/decreased/reversed].
-
-Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features including ____].
-Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features including ____].
-Megakaryocytes are [adequate/decreased/increased] [with ____].
-
-[Lymphoid aggregates: ____.]
-[Hemosiderin-laden macrophages: ____.]
-[Other findings: ____.]`,
+Biopsy adequacy: Adequate.
+Marrow biopsy cellularity: XX%; age-adjusted normo/hypo/hypercellular.
+Myeloid:Erythroid ratio is normal/increased/decreased/reversed].
+Myeloid lineage maturation is complete/left-shifted/dysplastic/atypical.
+Erythroid lineage maturation is complete/left-shifted/dysplastic/atypical.
+Megakaryocytes are adequate/decreased/increased in number, with ___ forms.
+Lymphoid aggregates: ____.]
+Scattered hemosiderin-laden macrophages are seen.
+Other findings: `,
 
     detailed: `CORE BIOPSY:
 Biopsy adequacy: [Adequate/Limited/Inadequate]; [describe limitations if any].
-
 Marrow biopsy cellularity: [XX%]; age adjusted [normocellular/hypocellular/hypercellular].
-
 Myeloid:Erythroid ratio is [normal/increased/decreased/reversed].
-
 Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed myeloid findings: left shift, maturation arrest, hyposegmentation, hypogranulation, Auer rods, dysmyelopoiesis, ALIP, etc.]
-
 Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed erythroid findings: megaloblastic change, nuclear budding, multinuclearity, hypochromia, disordered maturation, etc.]
-
 Megakaryocytes are [adequate/decreased/increased] [with size variations, nuclear features, clustering, paratrabecular localization, etc.]. [Megakaryocyte IHC shows ____.]
-
 Lymphocytes and plasma cells demonstrate [small mature lymphocytes/atypical lymphocytes/reactive features/distribution patterns].
-
 Architecture & Other Findings:
 [Lymphoid aggregates: paratrabecular/interstitial/nodular/diffuse.]
 [Hemosiderin-laden macrophages: rare/few/numerous.]
@@ -138,22 +129,19 @@ Architecture & Other Findings:
 // Aspirate Templates
 const ASPIRATE_TEMPLATES = {
     basic: `ASPIRATE:
-Aspirate adequacy: [Adequate/Limited/Inadequate], spicules: [Present/Absent/Scant], touch prep: [Adequate/Limited/Inadequate].
+Aspirate adequacy: Adequate, spicular
+Touch prep: Adequate.
 
-Megakaryocytes are [adequate/decreased/increased] [with morphologic features].
-Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features].
-Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] [with features].
+Myeloid lineage maturation is complete, with no significant abnormalities.
+Erythroid lineage maturation is complete, with no significant abnormalities.
+Megakaryocytes are present, with no significant abnormalities.
 [Lymphocytes and plasma cells: features and distribution.]`,
 
     detailed: `ASPIRATE:
 Aspirate adequacy: [Adequate/Limited/Inadequate], spicules: [Present/Absent/Scant], touch prep: [Adequate/Limited/Inadequate].
-
-Megakaryocytes are [adequate/decreased/increased] with [micromegakaryocytes/giant megakaryocytes/hypolobated nuclei/hyperlobated nuclei/dysplastic features/normal morphology].
-
-Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [megaloblastic change/nuclear budding/hypochromia/dyserythropoiesis/maturation patterns].
-
 Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [left shift/maturation arrest/hyposegmentation/hypogranulation/toxic granulation/Auer rods/dysmyelopoiesis].
-
+Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [megaloblastic change/nuclear budding/hypochromia/dyserythropoiesis/maturation patterns].
+Megakaryocytes are [adequate/decreased/increased] with [micromegakaryocytes/giant megakaryocytes/hypolobated nuclei/hyperlobated nuclei/dysplastic features/normal morphology].
 Lymphocytes and plasma cells demonstrate [small mature lymphocytes/reactive lymphocytes/atypical lymphocytes/plasmacytoid features/distribution patterns].`
 };
 
