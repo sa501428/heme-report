@@ -49,7 +49,8 @@ const LONEMAN_QUICK_TEXTS = {
     'cllasp': 'Lymphocytes: Small- to medium-sized cells with round to slightly irregular nuclei, clumped to moderately dispersed chromatin, inconspicuous nucleoli, and scant cytoplasm.',
     'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.',
     'fdc':'follicular dendritic cell',
-    'nmde':'no morphologic diagnostic evidence of the patient\'s neoplasm are seen'
+    'nmde':'no morphologic diagnostic evidence of the patient\'s neoplasm are seen',
+    'alip':'abnormal localization of immature precursors'
 };
 
 // Lymphoid Templates
@@ -98,11 +99,42 @@ Immunostains show that the large atypical cells are positive for [CD30/CD15/MUM1
 
 Concurrent flow cytometry (see below) shows no abnormal B or T-cell population.
 
-The histologic and immunophenotypic findings together support a diagnosis of classic Hodgkin lymphoma, [sub-type].`
+The histologic and immunophenotypic findings together support a diagnosis of classic Hodgkin lymphoma, [sub-type].`,
+
+    tissue: `A. LEFT AXILLARY LYMPH NODE EXCISIONAL BIOPSY:
+
+DIFFUSE LARGE B-CELL LYMPHOMA, NOT OTHERWISE SPECIFIED, (see comment).
+
+COMMENT: 
+Correlation with clinical, cytogenetics, molecular and additional laboratory findings is recommended. 
+__________________________________________________
+MICROSCOPIC DESCRIPTION:
+The H&E sections show ***
+
+Immunostains reveal ***. The Ki67 proliferation index is ***.
+
+FLOW CYTOMETRY (***): 
+***PENDING***
+
+(Clinical summary: yo h/o .)
+
+The immunohistochemical (IHC) stains performed on this case are deemed medically necessary. Some of the antigens may also have been evaluated by flow cytometry. Concurrent evaluation by IHC on tissue sections is indicated in this case in order to correlate immunophenotype with cell morphology and/or determine extent of involvement, spatial pattern and focality of potential disease distribution.
+
+The immunoperoxidase, immunofluorescence and in-situ hybridization tests performed at Brigham and Women's Hospital were developed and their performance characteristics determined by the Immunohistochemistry Laboratories in the Department of Pathology at BWH. They have not been cleared or approved by the U.S. Food and Drug Administration (FDA). The FDA has determined that such clearance or approval is not necessary.
+
+Additional immunostains performed at BWH show that the atypical lymphoid cells are positive for CD45(weak), ___, and ___, and negative for CD30, ___, and ___. In situ hybridization for Epstein Barr virus encoded RNA (EBER) is ____.
+    `
 };
 
 // Core Biopsy Templates
 const CORE_TEMPLATES = {
+    header: `A-C. BONE MARROW, CORE BIOPSY, ASPIRATE AND PERIPHERAL BLOOD SMEAR: 
+
+*** cellular marrow with maturing trilineage hematopoiesis (see comment).
+
+COMMENT: 
+Correlation with clinical, cytogenetics, molecular and additional laboratory findings is recommended.`,
+
     basic: `CORE BIOPSY:
 Biopsy adequacy: Adequate.
 Marrow biopsy cellularity: XX%; age-adjusted normo/hypo/hypercellular.
@@ -115,17 +147,24 @@ Scattered hemosiderin-laden macrophages are seen.
 Other findings: `,
 
     detailed: `CORE BIOPSY:
-Biopsy adequacy: [Adequate/Limited/Inadequate]; [describe limitations if any].
-Marrow biopsy cellularity: [XX%]; age adjusted [normocellular/hypocellular/hypercellular].
-Myeloid:Erythroid ratio is [normal/increased/decreased/reversed].
-Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed myeloid findings: left shift, maturation arrest, hyposegmentation, hypogranulation, Auer rods, dysmyelopoiesis, ALIP, etc.]
-Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical]. [Detailed erythroid findings: megaloblastic change, nuclear budding, multinuclearity, hypochromia, disordered maturation, etc.]
-Megakaryocytes are [adequate/decreased/increased] [with size variations, nuclear features, clustering, paratrabecular localization, etc.]. [Megakaryocyte IHC shows ____.]
-Lymphocytes and plasma cells demonstrate [small mature lymphocytes/atypical lymphocytes/reactive features/distribution patterns].
-Architecture & Other Findings:
-[Lymphoid aggregates: paratrabecular/interstitial/nodular/diffuse.]
-[Hemosiderin-laden macrophages: rare/few/numerous.]
-[Other core findings: granulomas/hemophagocytosis/mast cell aggregates/necrosis/osteosclerosis.]`,
+Biopsy specimen quality/adequacy: Adequate.
+Marrow biopsy cellularity: ***%; age-adjusted ***cellular.
+Plasma cells: ***% of cellularity (***% of the intertrabecular space). 
+  Architecture: singly scattered, and small clusters. 
+  Cytology: small to intermediate-sized mature forms.
+  IHC: The plasma cells are positive for CD138 and ***. 
+
+Of the remaining cellularity:
+Myeloid:erythroid ratio: normal.
+Myeloid maturation: complete.
+Erythroid maturation: complete.
+Blasts appear to be less than 5% of the cellularity.
+Megakaryocytes: adequate in number, consisting of a spectrum of normal forms.
+Lymphocytes: ***% of cellularity (***% of the intertrabecular space).
+Lymphoid aggregates are not seen.  
+A Giemsa special stain was performed to evaluate mast cells and plasma cells.
+Reticulin special stain shows no increase in bone marrow fibrosis, best classified as WHO grade MF-0. 
+Congo Red special stain is negative for amyloid deposition.`,
 
     other: `OTHER: XX% of cellularity. 
   Immunohistochemistry: IHC.
@@ -147,14 +186,34 @@ Touch prep: Adequate.
 Myeloid lineage maturation is complete and without significant abnormalities.
 Erythroid lineage maturation is complete and without significant abnormalities.
 Megakaryocytes are present and without significant abnormalities.
-[Lymphocytes and plasma cells: features and distribution.]`,
+Plasma cells: occasional intermediate sized and nucleolated forms.
+Iron stain reveals minimal storage iron. Ring sideroblasts are not identified.
+
+FLOW CYTOMETRY (***, marrow): 
+****PENDING****
+
+PERIPHERAL BLOOD:
+***
+
+(Clinical summary: yo h/o .)
+`,
 
     detailed: `ASPIRATE:
 Aspirate adequacy: [Adequate/Limited/Inadequate], spicules: [Present/Absent/Scant], touch prep: [Adequate/Limited/Inadequate].
 Myeloid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [left shift/maturation arrest/hyposegmentation/hypogranulation/toxic granulation/Auer rods/dysmyelopoiesis].
 Erythroid lineage maturation is [complete/left-shifted/dysplastic/atypical] with features including [megaloblastic change/nuclear budding/hypochromia/dyserythropoiesis/maturation patterns].
 Megakaryocytes are [adequate/decreased/increased] with [micromegakaryocytes/giant megakaryocytes/hypolobated nuclei/hyperlobated nuclei/dysplastic features/normal morphology].
-Lymphocytes and plasma cells demonstrate [small mature lymphocytes/reactive lymphocytes/atypical lymphocytes/plasmacytoid features/distribution patterns].`
+Lymphocytes and plasma cells demonstrate [small mature lymphocytes/reactive lymphocytes/atypical lymphocytes/plasmacytoid features/distribution patterns] [occasional intermediate sized and nucleolated forms].
+Iron stain reveals minimal storage iron. Ring sideroblasts are not identified.
+
+FLOW CYTOMETRY (***, marrow): 
+****PENDING****
+
+PERIPHERAL BLOOD:
+***
+
+(Clinical summary: yo h/o .)
+`
 };
 
 // Epic Data Parser Class
@@ -690,6 +749,10 @@ const IHC_STAINS = {
 };
 
 // Template Functions
+function insertCoreHeaderTemplate() {
+    insertTemplate(CORE_TEMPLATES.header);
+}
+
 function insertCoreBasicTemplate() {
     insertTemplate(CORE_TEMPLATES.basic);
 }

@@ -113,6 +113,7 @@ The application includes 60+ medical abbreviations from Dr. Loneman's quick text
 This application incorporates medical templates from:
 - **Dr. Megan Fitzpatrick**
 - **Dr. Derek Loneman**
+- **Dr. Haluk Kavus**
 - **Dr. Miekan Stonhill**
 - **Mass General Brigham Pathology**
 

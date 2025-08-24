@@ -12,7 +12,7 @@
         <header class="app-header">
             <h1>🩸 Hematopathology Report Generator</h1>
             <p class="subtitle">HIPAA Compliant - No Data Transfer - Local Processing Only</p>
-            <p class="acknowledgment">Templates courtesy of Dr. Megan Fitzpatrick, Dr. Derek Loneman, Dr. Miekan Stonhill, and Mass General Brigham Pathology</p>
+            <p class="acknowledgment">Templates courtesy of Dr. Megan Fitzpatrick, Dr. Derek Loneman, Dr. Haluk Kavus, Dr. Miekan Stonhill, and Mass General Brigham Pathology</p>
         </header>
 
         <div class="main-layout">
@@ -67,6 +67,7 @@
                         </div>
                         <div class="section-content collapsed" id="core-content">
                             <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertCoreHeaderTemplate()">Insert Header Template</button>
                                 <button class="btn btn-template" onclick="insertCoreBasicTemplate()">Insert Basic Template</button>
                                 <button class="btn btn-template" onclick="insertCoreDetailedTemplate()">Insert Detailed Template</button>
                                 <button class="btn btn-template" onclick="insertCoreOtherTemplate()">Insert Other Template</button>
@@ -107,6 +108,7 @@
                                 <button class="btn btn-template" onclick="insertLymphoidTemplate('follicular')">Follicular Lymphoma</button>
                                 <button class="btn btn-template" onclick="insertLymphoidTemplate('dlbcl')">DLBCL</button>
                                 <button class="btn btn-template" onclick="insertLymphoidTemplate('hodgkin')">Hodgkin Lymphoma</button>
+                                <button class="btn btn-template" onclick="insertLymphoidTemplate('tissue')">Tissue Template</button>
                                 <button class="btn btn-template" onclick="showLymphoidForm()">Interactive Form</button>
                             </div>
                         </div>
