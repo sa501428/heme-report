@@ -9,18 +9,18 @@ const LONEMAN_QUICK_TEXTS = {
     'noplas': 'No circulating plasma cells are seen.',
     'cyclinneg': 'Cyclin D1 is negative in plasma cells.',
     'plasasp': 'Plasma cells: Medium- to large-sized cells with round nuclei, condensed chromatin, and abundant cytoplasm. Occasional binucleate forms are seen.',
-    'corrplas': 'COMMENT: Clinical, radiographic, and laboratory correlation are required for definitive classification.',
+    'corrplas': 'Clinical, radiographic, and laboratory correlation are required for definitive classification.',
     'congoneg': 'A Congo red stain is negative for amyloid.',
     'congopos': 'A Congo red stain highlights perivascular amyloid deposition.',
     'knownmm': 'Involvement by the patient\'s known PLASMA CELL NEOPLASM.',
     'mmcyto': 'Cytology: Intermediate- to large-sized cells with round to irregular nuclear contours, coarse chromatin, variably prominent nucleoli, and moderate to abundant cytoplasm. Occasional multinucleated forms are seen.',
     'mmcore': 'Architecture: Patchy interstitial infiltration.',
-    'corrcyto': 'COMMENT: Correlation with concurrent cytogenetics is recommended.',
+    'corrcyto': 'Correlation with concurrent cytogenetics is recommended.',
     'polykl': 'polytypic by in-situ hybridization for kappa and lambda light chains.',
-    'corrmol': 'COMMENT: Correlation with pending molecular and cytogenetic studies is recommended.',
-    'corrmolcyto': 'COMMENT: Correlation with pending molecular and cytogenetic studies is recommended.',
-    'corrmolcytochim': 'COMMENT: Correlation with pending molecular, cytogenetic, and chimerism studies is recommended.',
-    'corrmolcytomrd': 'COMMENT: Correlation with pending minimal residual disease, molecular, and cytogenetic studies is recommended.',
+    'corrmol': 'Correlation with pending molecular and cytogenetic studies is recommended.',
+    'corrmolcyto': 'Correlation with pending molecular and cytogenetic studies is recommended.',
+    'corrmolcytochim': 'Correlation with pending molecular, cytogenetic, and chimerism studies is recommended.',
+    'corrmolcytomrd': 'Correlation with pending minimal residual disease, molecular, and cytogenetic studies is recommended.',
     'cd34n': 'Blasts are not increased (<5% of cells) by a CD34 immunostain.',
     'p53n': 'A p53 stain shows variably staining, suggestive of wild-type expression.',
     'header': 'A-C. BONE MARROW CORE BIOPSY AND ASPIRATE SMEARS, PERIPHERAL BLOOD SMEAR:',
@@ -50,7 +50,8 @@ const LONEMAN_QUICK_TEXTS = {
     'knownmn': 'Involvement by the patient\'s known MYELOID NEOPLASM.',
     'fdc':'follicular dendritic cell',
     'nmde':'no morphologic diagnostic evidence of the patient\'s neoplasm are seen',
-    'alip':'abnormal localization of immature precursors'
+    'alip':'abnormal localization of immature precursors',
+    'multilev': 'multiple levels were examined'
 };
 
 // Lymphoid Templates
@@ -828,10 +829,7 @@ function showAspirateForm() {
     // Interactive form coming soon
 }
 
-function showLymphoidForm() {
-    // This would open a detailed form for lymphoid
-    // Interactive form coming soon
-}
+
 
 function insertFromForm() {
     // This would process form data and insert into editor
