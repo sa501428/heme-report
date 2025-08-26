@@ -27,7 +27,7 @@
                     <!-- Epic Data Parser Section -->
                     <div class="template-section" id="epic-section">
                         <div class="section-header" onclick="toggleSection('epic-content')">
-                            <h3>🏥 Epic Data Parser</h3>
+                            <h3>Epic Data Parser</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content" id="epic-content">
@@ -62,16 +62,13 @@
                     <!-- Core Biopsy Template Section -->
                     <div class="template-section" id="core-section">
                         <div class="section-header" onclick="toggleSection('core-content')">
-                            <h3>🧬 Core Biopsy Template</h3>
+                            <h3>Core Biopsy Template</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content collapsed" id="core-content">
                             <div class="template-controls">
-                                <button class="btn btn-template" onclick="insertCoreHeaderTemplate()">Insert Header Template</button>
                                 <button class="btn btn-template" onclick="insertCoreBasicTemplate()">Insert Basic Template</button>
                                 <button class="btn btn-template" onclick="insertCoreDetailedTemplate()">Insert Detailed Template</button>
-                                <button class="btn btn-template" onclick="insertCoreOtherTemplate()">Insert Other Template</button>
-                                <button class="btn btn-template" onclick="insertCoreClotTemplate()">Insert Clot Template</button>
                             </div>
                             <div class="template-preview">
                                 <p><strong>Core Biopsy Template:</strong> Includes adequacy, cellularity, M:E ratio, and detailed cell line descriptions</p>
@@ -82,7 +79,7 @@
                     <!-- Aspirate Template Section -->
                     <div class="template-section" id="aspirate-section">
                         <div class="section-header" onclick="toggleSection('aspirate-content')">
-                            <h3>💉 Aspirate Template</h3>
+                            <h3>Aspirate Template</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content collapsed" id="aspirate-content">
@@ -99,7 +96,7 @@
                     <!-- Lymphoid Template Section -->
                     <div class="template-section" id="lymphoid-section">
                         <div class="section-header" onclick="toggleSection('lymphoid-content')">
-                            <h3>🔬 Lymphoid Templates</h3>
+                            <h3>Lymphoid Templates</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content collapsed" id="lymphoid-content">
@@ -114,36 +111,17 @@
                         </div>
                     </div>
 
-                    <!-- Peripheral Blood Section -->
-                    <div class="template-section" id="peripheral-section">
-                        <div class="section-header" onclick="toggleSection('peripheral-content')">
-                            <h3>🩸 Peripheral Blood</h3>
-                            <span class="toggle-icon">▼</span>
-                        </div>
-                        <div class="section-content collapsed" id="peripheral-content">
-                            <div class="template-controls">
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('normal')">Normal Smear</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('left_shift')">Left Shift</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('blasts')">Circulating Blasts</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('atypical_lymphs')">Atypical Lymphocytes</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('leukoerythroblastic')">Leukoerythroblastic</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('dysplastic')">Dysplastic Changes</button>
-                                <button class="btn btn-template" onclick="insertPeripheralBlood('tear_drops')">Tear Drop Cells</button>
-                            </div>
-                            <div class="template-preview">
-                                <p><strong>Peripheral Blood:</strong> Common peripheral smear findings for myeloid and lymphoid conditions</p>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- IHC & Special Stains Section -->
                     <div class="template-section" id="ihc-section">
                         <div class="section-header" onclick="toggleSection('ihc-content')">
-                            <h3>🔬 IHC & Special Stains</h3>
+                            <h3>IHC & Special Stains</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content collapsed" id="ihc-content">
                             <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertIHCStain('outside_ihc')">Outside IHC</button>
                                 <button class="btn btn-template" onclick="insertIHCStain('reticulin')">Reticulin Stain</button>
                                 <button class="btn btn-template" onclick="insertIHCStain('trichrome')">Trichrome Stain</button>
                                 <button class="btn btn-template" onclick="insertIHCStain('iron')">Iron Stain</button>
@@ -163,7 +141,7 @@
                     <!-- Text Expansion Reference -->
                     <div class="template-section" id="expansion-section">
                         <div class="section-header" onclick="toggleSection('expansion-content')">
-                            <h3>⚡ Text Expansion</h3>
+                            <h3>Text Expansion</h3>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="section-content collapsed" id="expansion-content">
@@ -181,6 +159,73 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-secondary" onclick="showExpansionHelp()">View All Codes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peripheral Blood Section -->
+                    <div class="template-section" id="peripheral-section">
+                        <div class="section-header" onclick="toggleSection('peripheral-content')">
+                            <h3>Peripheral Blood</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="peripheral-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('normal')">Normal Smear</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('no_pathology')">No Pathology</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('confirms_cbc')">Confirms CBC</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('not_available')">Not Available</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('left_shift')">Left Shift</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('blasts')">Circulating Blasts</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('no_blasts')">No Blasts</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('no_plasma_cells')">No Plasma Cells</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('atypical_lymphs')">Atypical Lymphocytes</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('leukoerythroblastic')">Leukoerythroblastic</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('dysplastic')">Dysplastic Changes</button>
+                                <button class="btn btn-template" onclick="insertPeripheralBlood('tear_drops')">Tear Drop Cells</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Peripheral Blood:</strong> Common peripheral smear findings for myeloid and lymphoid conditions</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flow Cytometry Section -->
+                    <div class="template-section" id="flow-section">
+                        <div class="section-header" onclick="toggleSection('flow-content')">
+                            <h3>Flow Cytometry</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="flow-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertTemplate('FLOW CYTOMETRY (***, marrow): \\n****PENDING****')">Flow Cytometry</button>
+                                <button class="btn btn-template" onclick="insertTemplate('Flow cytometry shows: ')">Flow Template</button>
+                                <button class="btn btn-template" onclick="insertTemplate('No abnormal B or T-cell population identified.')">No Abnormal Population</button>
+                                <button class="btn btn-template" onclick="insertTemplate('Flow cytometry is not performed due to inadequate sample.')">Inadequate Sample</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Flow Cytometry:</strong> Templates for flow cytometry results and findings</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Section -->
+                    <div class="template-section" id="other-section">
+                        <div class="section-header" onclick="toggleSection('other-content')">
+                            <h3>Other Sections</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content collapsed" id="other-content">
+                            <div class="template-controls">
+                                <button class="btn btn-template" onclick="insertCoreHeaderTemplate()">Insert Header Template</button>
+                                <button class="btn btn-template" onclick="insertCoreOtherTemplate()">Insert Other Template</button>
+                                <button class="btn btn-template" onclick="insertCoreClotTemplate()">Insert Clot Template</button>
+                                <button class="btn btn-template" onclick="insertTemplate('(Clinical summary: yo h/o .)')">Clinical History</button>
+                                <button class="btn btn-template" onclick="insertTemplate('COMMENT: \\nCorrelation with clinical, cytogenetics, molecular and additional laboratory findings is recommended.')">Correlation Comment</button>
+                                <button class="btn btn-template" onclick="insertTemplate('The findings are consistent with ***.')">Findings</button>
+                            </div>
+                            <div class="template-preview">
+                                <p><strong>Additional Templates:</strong> Header text and miscellaneous report components</p>
                             </div>
                         </div>
                     </div>
@@ -211,6 +256,8 @@
                 </div>
             </main>
         </div>
+
+
 
         <!-- Modal for Interactive Forms -->
         <div id="form-modal" class="modal" style="display: none;">

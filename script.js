@@ -188,14 +188,6 @@ Erythroid lineage maturation is complete and without significant abnormalities.
 Megakaryocytes are present and without significant abnormalities.
 Plasma cells: occasional intermediate sized and nucleolated forms.
 Iron stain reveals minimal storage iron. Ring sideroblasts are not identified.
-
-FLOW CYTOMETRY (***, marrow): 
-****PENDING****
-
-PERIPHERAL BLOOD:
-***
-
-(Clinical summary: yo h/o .)
 `,
 
     detailed: `ASPIRATE:
@@ -727,8 +719,13 @@ function insertParsedParagraph() {
 // Peripheral Blood Templates
 const PERIPHERAL_BLOOD = {
     normal: 'Review of the peripheral smear reveals mature normal leukocytes.',
+    no_pathology: 'Review of the peripheral smear reveals no specific pathologic abnormality.',
+    confirms_cbc: 'Review of the peripheral smear confirms the CBC findings.',
+    not_available: 'A peripheral smear is not available for review.',
     left_shift: 'Review of the peripheral smear reveals a left shift with increased bands and immature granulocytes.',
     blasts: 'Review of the peripheral smear reveals circulating blasts comprising X% of leukocytes.',
+    no_blasts: 'Circulating blasts are not identified.',
+    no_plasma_cells: 'No circulating plasma cells are identified.',
     atypical_lymphs: 'Review of the peripheral smear reveals atypical/reactive lymphocytes.',
     leukoerythroblastic: 'Review of the peripheral smear reveals a leukoerythroblastic picture with nucleated red cells, tear drop cells, and left-shifted granulocytes.',
     dysplastic: 'Review of the peripheral smear reveals dysplastic changes including hypogranular and hyposegmented neutrophils.',
@@ -737,6 +734,7 @@ const PERIPHERAL_BLOOD = {
 
 // IHC & Special Stains Templates
 const IHC_STAINS = {
+    outside_ihc: 'The above immunohistochemistry studies and special stains were submitted by the originating institution and reviewed at ***.',
     reticulin: 'Reticulin special stain shows X+ (out of 3) fiber staining.',
     trichrome: 'Trichrome special stain shows .',
     iron: 'Iron special stain shows .',
