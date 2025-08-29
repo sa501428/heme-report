@@ -51,7 +51,8 @@ const LONEMAN_QUICK_TEXTS = {
     'fdc':'follicular dendritic cell',
     'nmde':'no morphologic diagnostic evidence of the patient\'s neoplasm are seen',
     'alip':'abnormal localization of immature precursors',
-    'multilev': 'multiple levels were examined'
+    'multilev': 'multiple levels were examined',
+    'ebv': 'In situ hybridization for Epstein-Barr virus (EBER) highlights the large atypical cells.'
 };
 
 // Lymphoid Templates
@@ -145,7 +146,9 @@ Erythroid lineage maturation is complete/left-shifted/dysplastic/atypical.
 Megakaryocytes are adequate/decreased/increased in number, with ___ forms.
 Lymphoid aggregates: ____.]
 Scattered hemosiderin-laden macrophages are seen.
-Other findings: `,
+A Giemsa special stain was performed to evaluate mast cells and plasma cells.
+Reticulin special stain shows no increase in bone marrow fibrosis, best classified as WHO grade MF-0. 
+Congo Red special stain is negative for amyloid deposition.`,
 
     detailed: `CORE BIOPSY:
 Biopsy specimen quality/adequacy: Adequate.
@@ -744,7 +747,8 @@ const IHC_STAINS = {
     p53: 'P53 stain shows scattered staining.',
     blasts: 'CD34+ CD117+ blasts are X% of cellularity by CD34 immunostain and CD117/GATA-1 double stains.',
     monotypic_lc: 'Plasma cells are monotypic for kappa/lambda light chains by immunohistochemistry/in situ hybridization.',
-    polytypic_lc: 'Plasma cells are polytypic by in situ hybridization/immunohistochemistry for kappa and lambda light chains.'
+    polytypic_lc: 'Plasma cells are polytypic by in situ hybridization/immunohistochemistry for kappa and lambda light chains.',
+    ebv: 'In situ hybridization for Epstein-Barr virus (EBER) highlights the large atypical cells.'
 };
 
 // Template Functions
