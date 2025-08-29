@@ -198,10 +198,14 @@
                         </div>
                         <div class="section-content collapsed" id="flow-content">
                             <div class="template-controls">
-                                <button class="btn btn-template" onclick="insertTemplate('FLOW CYTOMETRY (***, marrow):&#10;****PENDING****')">Flow Cytometry</button>
-                                <button class="btn btn-template" onclick="insertTemplate('Flow cytometry shows: ')">Flow Template</button>
-                                <button class="btn btn-template" onclick="insertTemplate('No abnormal B or T-cell population identified.')">No Abnormal Pop</button>
-                                <button class="btn btn-template" onclick="insertTemplate('Flow cytometry is not performed due to inadequate sample.')">Inadequate Sample</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('basic')">Flow Cytometry</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('template')">Flow Template</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('no_abnormal')">No Abnormal Pop</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('inadequate')">Inadequate Sample</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('pending')">Pending</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('normal')">Normal</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('abnormal_b')">Abnormal B</button>
+                                <button class="btn btn-template" onclick="insertFlowCytometry('abnormal_t')">Abnormal T</button>
                             </div>
                             <div class="template-preview">
                                 <p><strong>Flow Cytometry:</strong> Templates for flow cytometry results and findings</p>

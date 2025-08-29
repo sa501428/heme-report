@@ -736,6 +736,18 @@ const PERIPHERAL_BLOOD = {
     tear_drops: 'Review of the peripheral smear reveals tear drop cells (dacrocytes) and anisopoikilocytosis.'
 };
 
+// Flow Cytometry Templates
+const FLOW_CYTOMETRY = {
+    basic: 'FLOW CYTOMETRY (***, marrow):\n****PENDING****',
+    template: 'Flow cytometry shows: ',
+    no_abnormal: 'No abnormal B or T-cell population identified.',
+    inadequate: 'Flow cytometry is not performed due to inadequate sample.',
+    pending: 'Flow cytometry studies are pending.',
+    normal: 'Flow cytometry reveals no immunophenotypic abnormalities.',
+    abnormal_b: 'Flow cytometry reveals an abnormal B-cell population with the following immunophenotype: ',
+    abnormal_t: 'Flow cytometry reveals an abnormal T-cell population with the following immunophenotype: '
+};
+
 // IHC & Special Stains Templates
 const IHC_STAINS = {
     outside_ihc: 'The above immunohistochemistry studies and special stains were submitted by the originating institution and reviewed at ***.',
@@ -787,6 +799,16 @@ function insertPeripheralBlood(findingType) {
         }
     } catch (error) {
         console.error('Error in insertPeripheralBlood:', error);
+    }
+}
+
+function insertFlowCytometry(flowType) {
+    try {
+        if (FLOW_CYTOMETRY && FLOW_CYTOMETRY[flowType]) {
+            insertTemplate(FLOW_CYTOMETRY[flowType]);
+        }
+    } catch (error) {
+        console.error('Error in insertFlowCytometry:', error);
     }
 }
 
